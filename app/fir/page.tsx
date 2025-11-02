@@ -6,8 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
-import { ArrowLeft, AlertCircle, Home } from "lucide-react"
+import { ArrowLeft, AlertCircle, Home, FileText, Shield } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 const FIR_CATEGORIES = [
   "Domestic Violence",
@@ -139,12 +140,21 @@ export default function FIRRegistrationPage() {
   // Success Screen
   if (submittedFIR) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="w-full bg-[#003366] text-white py-4 border-b-4 border-[#FF6600]">
-          <div className="max-w-5xl mx-auto px-6">
-            <h1 className="text-xl font-bold">FIR Registration Successful</h1>
+      <div className="min-h-screen bg-white">
+        {/* Government Header Bar */}
+        <div className="w-full bg-[#003366] text-white">
+          <div className="container mx-auto px-6 py-1 flex items-center justify-between text-sm">
+            <div className="flex items-center space-x-4">
+              <span className="font-medium">தமிழ்நாடு அரசு | Government of Tamil Nadu</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-xs">Screen Reader | A+ | A | A-</span>
+            </div>
           </div>
         </div>
+
+        {/* Tricolor Accent Bar */}
+        <div className="w-full h-1.5 bg-gradient-to-r from-orange-500 via-white to-green-600"></div>
 
         <div className="max-w-5xl mx-auto px-6 py-12">
           <Card className="border-2 border-green-200 bg-green-50">
@@ -202,212 +212,279 @@ export default function FIRRegistrationPage() {
 
   // Form Screen
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      {/* Header */}
-      <div className="w-full bg-[#003366] text-white py-4 border-b-4 border-[#FF6600] sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 flex items-center gap-3">
-          <Link href="/">
-            <Button variant="ghost" size="icon" className="hover:bg-white/20">
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-lg font-bold">First Information Report (FIR) Registration</h1>
-            <p className="text-xs text-white/80">File your complaint for immediate police assessment</p>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Government Header Bar */}
+      <div className="w-full bg-[#003366] text-white">
+        <div className="container mx-auto px-6 py-1 flex items-center justify-between text-sm">
+          <div className="flex items-center space-x-4">
+            <span className="font-medium">தமிழ்நாடு அரசு | Government of Tamil Nadu</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <span className="text-xs">Screen Reader | A+ | A | A-</span>
           </div>
         </div>
       </div>
 
-      {/* Form */}
-      <div className="max-w-5xl mx-auto px-6 py-6">
-        <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4">
-          {/* Left Column */}
-          <div className="col-span-12 lg:col-span-7 space-y-4">
-            {/* Contact Section */}
-            <Card className="border border-gray-200">
-              <CardHeader className="bg-gray-50 border-b py-3">
-                <CardTitle className="text-sm font-semibold">Complainant Information</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-4 space-y-3">
-                <div>
-                  <Label className="text-xs font-semibold">Full Name <span className="text-red-600">*</span></Label>
-                  <Input
-                    name="name"
-                    placeholder="Enter full name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="text-sm h-8 mt-1"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-xs font-semibold">Phone <span className="text-red-600">*</span></Label>
-                    <Input
-                      name="phone"
-                      type="tel"
-                      placeholder="10-digit"
-                      maxLength={10}
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="text-sm h-8 mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold">Email</Label>
-                    <Input
-                      name="email"
-                      type="email"
-                      placeholder="Optional"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="text-sm h-8 mt-1"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Tricolor Accent Bar */}
+      <div className="w-full h-1.5 bg-gradient-to-r from-orange-500 via-white to-green-600"></div>
 
-            {/* Incident Section */}
-            <Card className="border border-gray-200">
-              <CardHeader className="bg-gray-50 border-b py-3">
-                <CardTitle className="text-sm font-semibold">Incident Information</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-4 space-y-3">
-                <div>
-                  <Label className="text-xs font-semibold">Category <span className="text-red-600">*</span></Label>
-                  <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="w-full px-2 py-1 border border-gray-300 rounded text-xs mt-1"
-                  >
-                    {FIR_CATEGORIES.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <Label className="text-xs font-semibold">Description <span className="text-red-600">*</span></Label>
-                  <textarea
-                    name="description"
-                    placeholder="Describe incident in detail..."
-                    value={formData.description}
-                    onChange={handleChange}
-                    rows={3}
-                    className="w-full px-2 py-1 border border-gray-300 rounded text-xs mt-1 resize-none"
-                  />
-                  <p className="text-xs text-gray-500 mt-0.5">Minimum 20 characters</p>
-                </div>
-
-                <div>
-                  <Label className="text-xs font-semibold">Location <span className="text-red-600">*</span></Label>
-                  <Input
-                    name="location"
-                    placeholder="Address or location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    className="text-xs h-8 mt-1"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-xs font-semibold">Date <span className="text-red-600">*</span></Label>
-                    <Input
-                      name="date"
-                      type="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      className="text-xs h-8 mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs font-semibold">Time</Label>
-                    <Input
-                      name="time"
-                      type="time"
-                      value={formData.time}
-                      onChange={handleChange}
-                      className="text-xs h-8 mt-1"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Column */}
-          <div className="col-span-12 lg:col-span-5 space-y-4">
-            {/* Police Station */}
-            <Card className="border border-gray-200">
-              <CardHeader className="bg-gray-50 border-b py-3">
-                <CardTitle className="text-sm font-semibold">Police Station</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-4">
-                <Label className="text-xs font-semibold">Preferred Station <span className="text-red-600">*</span></Label>
-                <select
-                  name="station"
-                  value={formData.station}
-                  onChange={handleChange}
-                  className="w-full px-2 py-1 border border-gray-300 rounded text-xs mt-1"
+      {/* Main Header with Government Branding */}
+      <div className="bg-gradient-to-r from-blue-50 to-white border-b-2 border-blue-200">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Image 
+                src="/logo.png" 
+                alt="Abhaya Logo" 
+                width={56} 
+                height={56} 
+                className="drop-shadow-md"
+              />
+              <div>
+                <h1 className="text-2xl font-bold text-[#003366] flex items-center">
+                  अभया FIR Registration
+                  <FileText className="h-7 w-7 text-orange-600 ml-3" />
+                </h1>
+                <p className="text-[#0052CC] font-medium mt-1">First Information Report - File Your Complaint Online</p>
+                <p className="text-xs text-gray-600 mt-1">Digital Safety Commission | Government of Tamil Nadu</p>
+              </div>
+            </div>
+            <div className="flex flex-col items-end space-y-2">
+              <Link href="/">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold"
                 >
-                  {POLICE_STATIONS.map(s => (
-                    <option key={s.name} value={s.name}>{s.name}</option>
-                  ))}
-                </select>
-              </CardContent>
-            </Card>
-
-            {/* Important Notice */}
-            <Card className="border-2 border-blue-200 bg-blue-50">
-              <CardHeader className="bg-blue-100 border-b border-blue-200 py-3">
-                <CardTitle className="text-xs font-semibold text-blue-900 flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" />
-                  Important
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-3 text-xs text-blue-900">
-                <ul className="space-y-1">
-                  <li className="flex gap-2">
-                    <span>•</span>
-                    <span>Verify all information is accurate</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span>•</span>
-                    <span>False information may result in legal action</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span>•</span>
-                    <span>Your information remains confidential</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* Helpline */}
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-              <p className="text-xs font-semibold text-orange-900">Emergency Helpline</p>
-              <p className="text-sm font-bold text-orange-900 font-mono mt-1">044-28447705</p>
+                  <Home className="h-4 w-4 mr-2" />
+                  Home
+                </Button>
+              </Link>
+              <Link href="/dashboard">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold"
+                >
+                  <Shield className="h-4 w-4 mr-2" />
+                  Dashboard
+                </Button>
+              </Link>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Submit Buttons */}
-          <div className="col-span-12 flex gap-3 sticky bottom-0 bg-white pt-3 border-t">
-            <Link href="/dashboard" className="flex-1">
-              <Button type="button" variant="outline" className="w-full h-9">
-                Cancel
+      {/* Tricolor Accent Bar */}
+      <div className="w-full h-1 bg-gradient-to-r from-orange-500 via-white to-green-600"></div>
+
+      {/* Form Content - Compact Layout */}
+      <div 
+        className="flex-1 py-4"
+        style={{
+          background: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f0f4f8 100%)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-6">
+          <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4">
+            {/* Left Column - Contact & Incident */}
+            <div className="col-span-12 lg:col-span-8">
+              <div className="grid grid-cols-2 gap-4">
+                {/* Complainant Information */}
+                <Card className="border-2 border-blue-200 shadow-sm">
+                  <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b py-2">
+                    <CardTitle className="text-sm font-bold text-[#003366]">Complainant Details</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-3 space-y-2">
+                    <div>
+                      <Label className="text-xs font-semibold">Full Name <span className="text-red-600">*</span></Label>
+                      <Input
+                        name="name"
+                        placeholder="Enter full name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="text-xs h-8 mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs font-semibold">Phone <span className="text-red-600">*</span></Label>
+                      <Input
+                        name="phone"
+                        type="tel"
+                        placeholder="10-digit mobile"
+                        maxLength={10}
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="text-xs h-8 mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs font-semibold">Email (Optional)</Label>
+                      <Input
+                        name="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="text-xs h-8 mt-1"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Incident Information */}
+                <Card className="border-2 border-blue-200 shadow-sm">
+                  <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b py-2">
+                    <CardTitle className="text-sm font-bold text-[#003366]">Incident Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-3 space-y-2">
+                    <div>
+                      <Label className="text-xs font-semibold">Category <span className="text-red-600">*</span></Label>
+                      <select
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs mt-1 bg-white"
+                      >
+                        {FIR_CATEGORIES.map(cat => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <Label className="text-xs font-semibold">Location <span className="text-red-600">*</span></Label>
+                      <Input
+                        name="location"
+                        placeholder="Incident address"
+                        value={formData.location}
+                        onChange={handleChange}
+                        className="text-xs h-8 mt-1"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label className="text-xs font-semibold">Date <span className="text-red-600">*</span></Label>
+                        <Input
+                          name="date"
+                          type="date"
+                          value={formData.date}
+                          onChange={handleChange}
+                          className="text-xs h-8 mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs font-semibold">Time</Label>
+                        <Input
+                          name="time"
+                          type="time"
+                          value={formData.time}
+                          onChange={handleChange}
+                          className="text-xs h-8 mt-1"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Description - Full Width */}
+                <Card className="col-span-2 border-2 border-blue-200 shadow-sm">
+                  <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b py-2">
+                    <CardTitle className="text-sm font-bold text-[#003366]">Incident Description</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-3">
+                    <Label className="text-xs font-semibold">Detailed Description <span className="text-red-600">*</span></Label>
+                    <textarea
+                      name="description"
+                      placeholder="Describe the incident in detail (minimum 20 characters)..."
+                      value={formData.description}
+                      onChange={handleChange}
+                      rows={3}
+                      className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs mt-1 resize-none"
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Right Column - Station & Important Info */}
+            <div className="col-span-12 lg:col-span-4 space-y-4">
+              {/* Police Station */}
+              <Card className="border-2 border-blue-200 shadow-sm">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b py-2">
+                  <CardTitle className="text-sm font-bold text-[#003366]">Police Station</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-3">
+                  <Label className="text-xs font-semibold">Select Station <span className="text-red-600">*</span></Label>
+                  <select
+                    name="station"
+                    value={formData.station}
+                    onChange={handleChange}
+                    className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs mt-1 bg-white"
+                  >
+                    {POLICE_STATIONS.map(s => (
+                      <option key={s.name} value={s.name}>{s.name}</option>
+                    ))}
+                  </select>
+                </CardContent>
+              </Card>
+
+              {/* Important Notice */}
+              <Card className="border-2 border-orange-300 bg-orange-50 shadow-sm">
+                <CardHeader className="bg-orange-100 border-b border-orange-200 py-2">
+                  <CardTitle className="text-xs font-bold text-orange-900 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Important Guidelines
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-3 text-xs text-orange-900 space-y-1.5">
+                  <div className="flex gap-2">
+                    <span>•</span>
+                    <span>All fields marked with * are mandatory</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>•</span>
+                    <span>Verify information accuracy before submission</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>•</span>
+                    <span>False information may result in legal action</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>•</span>
+                    <span>Your information remains strictly confidential</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Helpline */}
+              <Card className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-sm">
+                <CardContent className="pt-3 text-center">
+                  <p className="text-xs font-semibold text-red-900">24/7 Emergency Helpline</p>
+                  <p className="text-2xl font-bold text-red-900 font-mono mt-1">100</p>
+                  <p className="text-xs text-red-800 mt-1">044-28447705</p>
+                </CardContent>
+              </Card>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#FF6600] hover:bg-[#E55A00] text-white h-10 text-sm font-bold shadow-md"
+              >
+                {isSubmitting ? "Processing FIR..." : "Submit FIR Registration"}
               </Button>
-            </Link>
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 bg-[#FF6600] hover:bg-[#E55A00] text-white h-9 text-sm font-semibold"
-            >
-              {isSubmitting ? "Processing..." : "Submit FIR"}
-            </Button>
-          </div>
-        </form>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* Government Footer Strip */}
+      <div className="w-full bg-[#003366] text-white py-3">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-xs">
+            © 2025 Digital Safety Commission, Government of Tamil Nadu | All Rights Reserved
+          </p>
+        </div>
       </div>
     </div>
   )

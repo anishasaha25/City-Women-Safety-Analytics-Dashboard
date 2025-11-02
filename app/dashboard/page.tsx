@@ -6,18 +6,18 @@ import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { AlertTriangle, MapPin, Shield, Eye, Clock, CheckCircle, RefreshCw } from "lucide-react"
+import { AlertTriangle, MapPin, Shield, Eye, Clock, CheckCircle, RefreshCw, Activity } from "lucide-react"
 import dynamic from "next/dynamic"
 import RealTimeAlerts from "@/components/real-time-alerts"
 import CCTVViewer from "@/components/cctv-viewer"
 import FIRsPanel from "@/components/firs-panel"
 import { toast } from "sonner"
-import DashboardArt from '@/components/dashboard-art'
+import Image from "next/image"
 
 // Dynamically import the map component to avoid SSR issues
 const DashboardMap = dynamic(() => import("@/components/dashboard-map"), {
   ssr: false,
-  loading: () => <div className="h-96 bg-gray-100 rounded-lg flex items-center justify-center">Loading map...</div>,
+  loading: () => <div className="h-full bg-gray-100 rounded-lg flex items-center justify-center text-xs">Loading map...</div>,
 })
 
 interface Alert {
@@ -156,7 +156,7 @@ export default function DashboardPage() {
   const respondingAlerts = alerts.filter((alert) => alert.status === "Responding")
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white flex flex-col">
       {!authChecked || !user ? (
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center text-gray-600">Redirecting to login...</div>
@@ -164,236 +164,232 @@ export default function DashboardPage() {
       ) : null}
       <RealTimeAlerts onNewAlert={handleNewAlert} onAlertUpdate={handleAlertUpdate} />
 
-      {/* Government Header - compact (render only after authChecked & user to avoid hydration mismatch) */}
+      {/* Government Header - Compact */}
       {authChecked && user ? (
-        <div className="gov-header sticky top-0 z-40">
-          <div className="relative">
-            <DashboardArt />
-            <div className="container mx-auto px-4 py-2 relative z-10">
-              <div className="flex items-center justify-between gap-8">
-                <div className="flex items-center flex-1 min-w-0">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                    <Shield className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <div className="min-w-0">
-                    <h1 className="text-white text-2xl font-bold truncate">
-                      {user?.role === "police" ? "Police Command Center" : user?.role === "ngo" ? "NGO Partner Dashboard" : "Women Safety Administration"}
+        <>
+          {/* Government Top Bar */}
+          <div className="w-full bg-[#003366] text-white">
+            <div className="container mx-auto px-6 py-1 flex items-center justify-between text-xs">
+              <div className="flex items-center space-x-4">
+                <span className="font-medium">தமிழ்நாடு அரசு | Government of Tamil Nadu</span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <span className="uppercase font-semibold">{user?.role} | {user?.regId}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Tricolor Accent Bar */}
+          <div className="w-full h-1.5 bg-gradient-to-r from-orange-500 via-white to-green-600"></div>
+
+          {/* Main Header */}
+          <div className="bg-gradient-to-r from-blue-50 to-white border-b-2 border-blue-200">
+            <div className="container mx-auto px-6 py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <Image 
+                    src="/logo.png" 
+                    alt="Abhaya Logo" 
+                    width={48} 
+                    height={48} 
+                    className="drop-shadow-md"
+                  />
+                  <div>
+                    <h1 className="text-2xl font-bold text-[#003366] flex items-center">
+                      अभया Security Command Center
+                      <Shield className="h-7 w-7 text-orange-600 ml-3" />
                     </h1>
-                    <p className="text-orange-100 text-sm truncate">
-                      {user?.role === "police" ? "Chennai Women Safety Monitoring System" : user?.role === "ngo" ? "Registered NGO Partner View" : "Government oversight & analytics"}
+                    <p className="text-[#0052CC] font-medium text-sm">
+                      {user?.role === "police" ? "Police Monitoring System" : user?.role === "ngo" ? "NGO Partner Dashboard" : "Government Oversight"}
                     </p>
                   </div>
                 </div>
-
-                {/* Stats Cards */}
-                <div className="flex items-center space-x-4 flex-shrink-0">
-                  <div className="flex items-center space-x-3">
-                    <div className="bg-white/10 backdrop-blur-sm text-white p-2 rounded border border-white/20 text-center min-w-[60px]">
-                      <div className="text-xl font-bold">{newAlerts.length}</div>
-                      <div className="text-[11px] opacity-90">New</div>
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-3 bg-white rounded-lg px-4 py-2 border-2 border-blue-200 shadow-sm">
+                    <div className="text-center">
+                      <div className="text-xl font-bold text-red-600">{newAlerts.length}</div>
+                      <div className="text-[10px] text-gray-600 font-medium">New</div>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-sm text-white p-2 rounded border border-white/20 text-center min-w-[60px]">
-                      <div className="text-xl font-bold">{respondingAlerts.length}</div>
-                      <div className="text-[11px] text-gray-600">Resp</div>
+                    <div className="h-8 w-px bg-gray-300"></div>
+                    <div className="text-center">
+                      <div className="text-xl font-bold text-amber-600">{respondingAlerts.length}</div>
+                      <div className="text-[10px] text-gray-600 font-medium">Responding</div>
                     </div>
+                    <div className="h-8 w-px bg-gray-300"></div>
                     <div className="text-center">
                       <div className="text-xl font-bold text-blue-600">{activeAlerts.length}</div>
-                      <div className="text-[11px] text-gray-600">Active</div>
+                      <div className="text-[10px] text-gray-600 font-medium">Active</div>
                     </div>
                   </div>
-                  <Button onClick={fetchAlerts} variant="outline" size="sm" disabled={isRefreshing}>
+                  <Button 
+                    onClick={fetchAlerts} 
+                    variant="outline" 
+                    size="sm" 
+                    disabled={isRefreshing}
+                    className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold"
+                  >
                     <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
                     Refresh
                   </Button>
                 </div>
-
-                {/* User Info - positioned left from right */}
-                <div className="flex items-center space-x-3 mr-64 flex-shrink-0">
-                  <span className="text-sm text-white font-semibold">{user?.role.toUpperCase()}</span>
-                  <span className="text-xs text-orange-100">{user?.regId}</span>
-                </div>
               </div>
             </div>
           </div>
-        </div>
+
+          {/* Tricolor Accent Bar */}
+          <div className="w-full h-1 bg-gradient-to-r from-orange-500 via-white to-green-600"></div>
+        </>
       ) : null}
 
-  <div className="container mx-auto px-4 py-6 dashboard-bg">
-        <div className="grid lg:grid-cols-4 gap-6">
-          {/* Map Section */}
-          <div className="lg:col-span-2">
-            <Card className="dashboard-card relative overflow-hidden">
-              <div className="map-panel-accent" />
-              <CardHeader>
-                <CardTitle className="flex items-center text-lg">
-                  <MapPin className="h-5 w-5 mr-2 text-orange-600" />
-                  <span className="bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">Live Alert Map</span>
-                  <span className="ml-2 text-gray-500 font-normal">Chennai</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <DashboardMap alerts={alerts} onAlertSelect={setSelectedAlert} selectedAlert={selectedAlert} />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Panel */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* CCTV Viewer */}
-            <CCTVViewer selectedAlert={selectedAlert} />
-
-            {/* Selected Alert Details */}
-            {selectedAlert && (
-              <Card className="dashboard-card relative overflow-hidden">
-                <div className="panel-accent" />
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span className="flex items-center">
-                      <Eye className="h-5 w-5 mr-2 text-blue-600" />
-                      <span className="bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">Alert Details</span>
-                    </span>
-                    <Badge variant={getStatusColor(selectedAlert.status)} className="flex items-center gap-1">
-                      {getStatusIcon(selectedAlert.status)}
-                      {selectedAlert.status}
-                    </Badge>
+      {/* Dashboard Content - Compact Layout */}
+      <div 
+        className="flex-1 py-3"
+        style={{
+          background: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f0f4f8 100%)',
+        }}
+      >
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-12 gap-4">
+            {/* Map Section - 5 columns */}
+            <div className="lg:col-span-5">
+              <Card className="border-2 border-blue-200 shadow-md h-full">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b py-2">
+                  <CardTitle className="flex items-center text-sm text-[#003366]">
+                    <MapPin className="h-4 w-4 mr-2 text-orange-600" />
+                    Live Alert Map - Chennai
+                    <Activity className="h-3 w-3 ml-2 text-green-600 animate-pulse" />
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <div className="text-sm font-medium text-gray-600">Alert ID</div>
-                    <div className="text-lg font-mono">{selectedAlert.id}</div>
+                <CardContent className="pt-3 pb-3">
+                  <div className="h-[calc(100vh-280px)]">
+                    <DashboardMap alerts={alerts} onAlertSelect={setSelectedAlert} selectedAlert={selectedAlert} />
                   </div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-600">Type</div>
-                    <div className="text-lg">{selectedAlert.type}</div>
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-600">Location</div>
-                    <div className="text-sm">
-                      {selectedAlert.lat.toFixed(4)}, {selectedAlert.lng.toFixed(4)}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-600">Nearest Station</div>
-                    <div className="text-sm">{selectedAlert.nearestStation}</div>
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-600">Time</div>
-                    <div className="text-sm">{new Date(selectedAlert.timestamp).toLocaleString()}</div>
-                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-                  {user?.role === "police" ? (
-                    <>
-                      {selectedAlert.status === "New" && (
-                        <div className="space-y-2">
-                          <Button
-                            onClick={() => updateAlertStatus(selectedAlert.id, "Responding")}
-                            className="w-full"
-                            size="sm"
-                          >
-                            Mark as Responding
-                          </Button>
-                        </div>
-                      )}
+            {/* Middle Section - CCTV & Alert Details - 4 columns */}
+            <div className="lg:col-span-4 flex flex-col gap-3 h-[calc(100vh-280px)]">
+              {/* CCTV Viewer */}
+              <div className="flex-1 min-h-0">
+                <CCTVViewer selectedAlert={selectedAlert} />
+              </div>
 
-                      {selectedAlert.status === "Responding" && (
-                        <div className="space-y-2">
-                          <Button
-                            onClick={() => updateAlertStatus(selectedAlert.id, "Resolved")}
-                            variant="outline"
-                            className="w-full"
-                            size="sm"
-                          >
-                            Mark as Resolved
-                          </Button>
-                        </div>
-                      )}
-                    </>
-                  ) : user?.role === "ngo" ? (
-                    <div className="space-y-2">
-                      <Button
-                        onClick={async () => {
-                          try {
-                            // For prototype: just show a toast and simulate a request to dispatch
-                            await fetch('/api/notifications', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                userId: 'POLICE_DISPATCH',
-                                alertId: selectedAlert.id,
-                                type: 'ngo_flag',
-                                title: 'NGO Requested Police Response',
-                                message: `NGO ${user?.regId} requests police response for alert #${selectedAlert.id}`,
-                              }),
-                            })
-                            toast.success('Police notified of NGO request')
-                          } catch (e) {
-                            console.error(e)
-                            toast.error('Failed to notify police')
-                          }
-                        }}
-                        className="w-full"
-                        size="sm"
-                      >
-                        Request Police Response
-                      </Button>
+              {/* Selected Alert Details */}
+              {selectedAlert && (
+                <Card className="border-2 border-orange-200 shadow-sm flex-shrink-0">
+                  <CardHeader className="bg-gradient-to-r from-orange-50 to-white border-b py-2">
+                    <CardTitle className="flex items-center justify-between text-sm text-[#003366]">
+                      <span className="flex items-center">
+                        <AlertTriangle className="h-4 w-4 mr-2 text-red-600" />
+                        Alert #{selectedAlert.id}
+                      </span>
+                      <Badge variant={getStatusColor(selectedAlert.status)} className="flex items-center gap-1 text-[10px]">
+                        {getStatusIcon(selectedAlert.status)}
+                        {selectedAlert.status}
+                      </Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-2 pb-2 space-y-1.5">
+                    <div className="text-xs space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 font-medium">Type:</span>
+                        <span className="font-semibold">{selectedAlert.type}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 font-medium">Station:</span>
+                        <span className="text-xs">{selectedAlert.nearestStation}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 font-medium">Time:</span>
+                        <span>{new Date(selectedAlert.timestamp).toLocaleTimeString()}</span>
+                      </div>
                     </div>
+                    {user?.role === "police" && (
+                      <div className="flex gap-2 pt-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => updateAlertStatus(selectedAlert.id, "Responding")}
+                          disabled={selectedAlert.status !== "New"}
+                          className="flex-1 h-7 text-xs"
+                        >
+                          Respond
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => updateAlertStatus(selectedAlert.id, "Resolved")}
+                          disabled={selectedAlert.status === "Resolved"}
+                          className="flex-1 h-7 text-xs"
+                        >
+                          Resolve
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            {/* Right Panel - Active Alerts & FIRs - 3 columns */}
+            <div className="lg:col-span-3 flex flex-col gap-3 h-[calc(100vh-280px)]">
+              {/* Active Alerts List */}
+              <Card className="border-2 border-red-200 shadow-sm flex-1 min-h-0 flex flex-col">
+                <CardHeader className="bg-gradient-to-r from-red-50 to-white border-b py-2 flex-shrink-0">
+                  <CardTitle className="flex items-center text-sm text-[#003366]">
+                    <AlertTriangle className="h-4 w-4 mr-2 text-red-600" />
+                    Active Alerts ({activeAlerts.length})
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-3 flex-1 min-h-0 overflow-hidden">
+                  {loading ? (
+                    <div className="text-center py-4 text-gray-500 text-xs">Loading...</div>
+                  ) : activeAlerts.length === 0 ? (
+                    <div className="text-center py-4 text-gray-500 text-xs">No active alerts</div>
                   ) : (
-                    <div className="space-y-2">
-                      <div className="p-3 bg-white/5 rounded">Government users can view analytics and manage policies.</div>
+                    <div className="h-full overflow-y-auto space-y-2">
+                      {activeAlerts.map((alert) => (
+                        <div
+                          key={alert.id}
+                          className={`p-2 border rounded cursor-pointer transition-colors text-xs ${
+                            selectedAlert?.id === alert.id ? "bg-blue-50 border-blue-300" : "hover:bg-gray-50"
+                          }`}
+                          onClick={() => setSelectedAlert(alert)}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="font-semibold text-xs">#{alert.id}</div>
+                            <Badge variant={getStatusColor(alert.status)} className="text-[9px] h-4 px-1">
+                              {alert.status}
+                            </Badge>
+                          </div>
+                          <div className="text-[10px] text-gray-600 space-y-0.5">
+                            <div className="font-medium">{alert.type}</div>
+                            <div className="truncate">{alert.nearestStation}</div>
+                            <div>{new Date(alert.timestamp).toLocaleTimeString()}</div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </CardContent>
               </Card>
-            )}
 
-            {/* Active Alerts List */}
-            <Card className="dashboard-card relative overflow-hidden">
-              <div className="panel-accent" />
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <AlertTriangle className="h-5 w-5 mr-2 text-red-600" />
-                  <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">Active Alerts</span>
-                  <span className="ml-2 font-normal text-gray-500">({activeAlerts.length})</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {loading ? (
-                  <div className="text-center py-4 text-gray-500">Loading alerts...</div>
-                ) : activeAlerts.length === 0 ? (
-                  <div className="text-center py-4 text-gray-500">No active alerts</div>
-                ) : (
-                  <div className="space-y-3 max-h-64 overflow-y-auto">
-                    {activeAlerts.map((alert) => (
-                      <div
-                        key={alert.id}
-                        className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                          selectedAlert?.id === alert.id ? "bg-blue-50 border-blue-200" : "hover:bg-gray-50"
-                        }`}
-                        onClick={() => setSelectedAlert(alert)}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="font-medium">Alert #{alert.id}</div>
-                          <Badge variant={getStatusColor(alert.status)} className="flex items-center gap-1 text-xs">
-                            {getStatusIcon(alert.status)}
-                            {alert.status}
-                          </Badge>
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          <div>{alert.type}</div>
-                          <div>{alert.nearestStation}</div>
-                          <div>{new Date(alert.timestamp).toLocaleTimeString()}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Registered FIRs Section */}
-            <FIRsPanel showOnly={5} />
+              {/* Registered FIRs Section - Compact */}
+              <div className="flex-shrink-0">
+                <FIRsPanel showOnly={3} />
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+
+      {/* Government Footer Strip */}
+      <div className="w-full bg-[#003366] text-white py-2">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-xs">
+            © 2025 Digital Safety Commission, Government of Tamil Nadu | All Rights Reserved
+          </p>
         </div>
       </div>
     </div>

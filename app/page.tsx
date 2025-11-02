@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Shield, MapPin, Users, BarChart3, Smartphone } from "lucide-react"
+import { Shield, MapPin, Users, BarChart3, Smartphone, AlertCircle, Video, FileText } from "lucide-react"
 import Image from "next/image"
 import HeroArt from "@/components/hero-art"
 // import GovernmentBrandingNotice from "@/components/government-branding"
@@ -118,48 +118,90 @@ export default function HomePage() {
             </div>
           </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Link href="/dashboard">
-              <Card className="gov-card p-4 cursor-pointer hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">Security Command Center</CardTitle>
+              <Card className="gov-card border-l-4 border-l-red-600 p-5 cursor-pointer hover:shadow-lg transition-all hover:border-l-red-700 bg-gradient-to-r from-red-50 to-white">
+                <CardHeader className="p-0 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-red-600 rounded-md flex items-center justify-center flex-shrink-0">
+                      <AlertCircle className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="gov-heading text-lg text-gray-900">Security Command Center</CardTitle>
+                  </div>
                 </CardHeader>
-                <CardContent className="text-sm text-gray-600">Real-time monitoring and dispatch tools for officers.</CardContent>
+                <CardContent className="p-0 text-sm text-gray-700 leading-relaxed">
+                  Real-time monitoring and dispatch tools for officers.
+                </CardContent>
               </Card>
             </Link>
             <Link href="/analytics">
-              <Card className="gov-card p-4 cursor-pointer hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">Analytics & Insights</CardTitle>
+              <Card className="gov-card border-l-4 border-l-blue-600 p-5 cursor-pointer hover:shadow-lg transition-all hover:border-l-blue-700 bg-gradient-to-r from-blue-50 to-white">
+                <CardHeader className="p-0 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-blue-600 rounded-md flex items-center justify-center flex-shrink-0">
+                      <BarChart3 className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="gov-heading text-lg text-gray-900">Analytics & Insights</CardTitle>
+                  </div>
                 </CardHeader>
-                <CardContent className="text-sm text-gray-600">Incident heatmaps, SLA dashboards and reporting for administrators.</CardContent>
+                <CardContent className="p-0 text-sm text-gray-700 leading-relaxed">
+                  Incident heatmaps, SLA dashboards and reporting for administrators.
+                </CardContent>
               </Card>
             </Link>
-            <Link href="/mobile-simulator">
-              <Card className="gov-card p-4 cursor-pointer hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">Mobile App Simulator</CardTitle>
+            <Link href="/fir">
+              <Card className="gov-card border-l-4 border-l-purple-600 p-5 cursor-pointer hover:shadow-lg transition-all hover:border-l-purple-700 bg-gradient-to-r from-purple-50 to-white">
+                <CardHeader className="p-0 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-purple-600 rounded-md flex items-center justify-center flex-shrink-0">
+                      <FileText className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="gov-heading text-lg text-gray-900">Register FIR</CardTitle>
+                  </div>
                 </CardHeader>
-                <CardContent className="text-sm text-gray-600">Test SOS flows and notifications from the citizen experience.</CardContent>
+                <CardContent className="p-0 text-sm text-gray-700 leading-relaxed">
+                  File a First Information Report for quick police assessment.
+                </CardContent>
               </Card>
             </Link>
             <Link href="/cctv">
-              <Card className="gov-card p-4 cursor-pointer hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">CCTV Intelligence</CardTitle>
+              <Card className="gov-card border-l-4 border-l-green-600 p-5 cursor-pointer hover:shadow-lg transition-all hover:border-l-green-700 bg-gradient-to-r from-green-50 to-white">
+                <CardHeader className="p-0 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-green-600 rounded-md flex items-center justify-center flex-shrink-0">
+                      <Video className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="gov-heading text-lg text-gray-900">CCTV Intelligence</CardTitle>
+                  </div>
                 </CardHeader>
-                <CardContent className="text-sm text-gray-600">Vision-based threat detection (prototype YOLO module) for proactive alerts.</CardContent>
+                <CardContent className="p-0 text-sm text-gray-700 leading-relaxed">
+                  Vision-based threat detection (prototype YOLO module) for proactive alerts.
+                </CardContent>
               </Card>
             </Link>
           </div>
         </div>
 
-        {/* Services Section */}
-        <div id="features" className="mb-16">
+        {/* Services Section - Indian Government Style Background */}
+        <div id="features" className="mb-16 py-12 relative" style={{
+          background: 'linear-gradient(135deg, #FF9933 0%, #FFFFFF 15%, #FFFFFF 85%, #138808 100%)',
+          backgroundSize: '100% 100%'
+        }}>
+          {/* Tricolor accent bars */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-white to-green-600"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-white to-green-600"></div>
+          
+          {/* Ashoka Chakra inspired pattern overlay */}
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(0, 51, 102, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(0, 51, 102, 0.3) 0%, transparent 50%)',
+            backgroundSize: '100% 100%'
+          }}></div>
+          
+          <div className="relative z-10">
           <div className="text-center mb-8">
-            <h2 className="gov-heading text-3xl mb-2">Platform Services</h2>
-            <div className="w-24 h-1 bg-orange-500 mx-auto mb-4"></div>
-            <p className="gov-text text-gray-600 max-w-2xl mx-auto">
+            <h2 className="gov-heading text-3xl mb-2 text-[#003366]">Platform Services</h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-orange-500 via-white to-green-600 mx-auto mb-4 shadow-sm"></div>
+            <p className="gov-text text-gray-700 max-w-2xl mx-auto font-medium">
               Comprehensive digital services for women&apos;s safety and emergency response management
             </p>
           </div>
@@ -312,7 +354,10 @@ export default function HomePage() {
                 </Link>
               </CardContent> */}
             {/* </Card> */}
-            {/* Mobile Application Demo moved into grid */}
+          </div>
+          {/* Mobile Application Demo - centered on its own row */}
+          <div className="flex justify-center max-w-6xl mx-auto mt-6">
+            <div className="w-full md:w-1/3">
             <Card className="gov-card hover:shadow-lg transition-shadow duration-200 bg-orange-50">
               <CardHeader className="text-center pb-4">
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 mx-auto">
@@ -349,6 +394,8 @@ export default function HomePage() {
                 </Link>
               </CardContent>
             </Card>
+            </div>
+          </div>
           </div>
         </div>
         {/* End Services Section */}
@@ -404,7 +451,13 @@ export default function HomePage() {
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div>
                 <div className="flex items-center mb-4">
-                  <Shield className="h-8 w-8 text-orange-600 mr-3" />
+                  <Image 
+                    src="/logo.png" 
+                    alt="Abhaya Logo" 
+                    width={48} 
+                    height={48} 
+                    className="mr-3"
+                  />
                   <div>
                     <h3 className="gov-heading text-lg">अभया</h3>
                     <p className="gov-text text-sm text-gray-600">City Women Safety Chennai</p>
